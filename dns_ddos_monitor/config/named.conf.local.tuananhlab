@@ -1,0 +1,19 @@
+//
+// Do any local configuration here
+//
+
+// Zone tuananhlab.local cho DNS DDoS testing
+zone "tuananhlab.local" {
+    type master;
+    file "/etc/bind/zones/tuananhlab.local";
+    allow-query { any; };
+    allow-transfer { none; };
+};
+
+// Zone reverse cho mạng 192.168.85.0/24
+zone "85.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/tuananhlab.local.rev";
+    allow-query { any; };
+    allow-transfer { none; };
+};

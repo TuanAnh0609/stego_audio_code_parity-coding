@@ -1,0 +1,52 @@
+$TTL    604800
+@       IN      SOA     tuananhlab.local. root.tuananhlab.local. (
+                              2024010101 ; Serial (update when changed)
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+; Name servers
+@       IN      NS      bind.tuananhlab.local.
+
+; A records pointing to real servers
+@       IN      A       192.168.85.130    ; DNS server itself
+bind    IN      A       192.168.85.130    ; DNS server
+web     IN      A       192.168.85.135    ; Web server
+
+; Additional services pointing to web server
+www     IN      A       192.168.85.135    ; Web server alias
+mail    IN      A       192.168.85.135    ; Mail server
+smtp    IN      A       192.168.85.135    ; SMTP server
+ftp     IN      A       192.168.85.135    ; FTP server
+api     IN      A       192.168.85.135    ; API endpoint
+blog    IN      A       192.168.85.135    ; Blog
+shop    IN      A       192.168.85.135    ; E-commerce
+admin   IN      A       192.168.85.135    ; Admin panel
+dev     IN      A       192.168.85.135    ; Development
+test    IN      A       192.168.85.135    ; Testing
+
+; CNAME records for aliases
+webmail IN      CNAME   mail.tuananhlab.local.
+email   IN      CNAME   mail.tuananhlab.local.
+files   IN      CNAME   ftp.tuananhlab.local.
+store   IN      CNAME   shop.tuananhlab.local.
+
+; MX record for mail
+@       IN      MX      10 mail.tuananhlab.local.
+
+; TXT records for testing
+@       IN      TXT     "v=spf1 ip4:192.168.85.0/24 ~all"
+@       IN      TXT     "DNS DDoS Test Domain - tuananhlab.local"
+
+; SRV records for services
+_http._tcp.tuananhlab.local.  IN SRV 10 60 80  www.tuananhlab.local.
+_https._tcp.tuananhlab.local. IN SRV 10 60 443 www.tuananhlab.local.
+_ftp._tcp.tuananhlab.local.   IN SRV 10 60 21  ftp.tuananhlab.local.
+
+; Additional test records for different query types
+ns1     IN      A       192.168.85.130
+ns2     IN      A       192.168.85.130
+test1   IN      A       192.168.85.135
+test2   IN      A       192.168.85.135
+test3   IN      A       192.168.85.135
