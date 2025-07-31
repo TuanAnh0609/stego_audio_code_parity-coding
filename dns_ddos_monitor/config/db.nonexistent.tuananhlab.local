@@ -1,0 +1,13 @@
+$TTL    60
+@       IN      SOA     tuananhlab.local. root.tuananhlab.local. (
+                              2024010101 ; Serial
+                         300            ; Refresh (short for testing)
+                          60            ; Retry (short for testing)
+                        1800           ; Expire (short for testing)
+                          60 )          ; Negative Cache TTL (short for testing)
+
+; Name servers
+@       IN      NS      bind.tuananhlab.local.
+
+; This zone is intentionally minimal for NXDOMAIN attack testing
+; Most queries to this domain should return NXDOMAIN

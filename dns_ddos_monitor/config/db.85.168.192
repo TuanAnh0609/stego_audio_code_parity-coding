@@ -1,0 +1,16 @@
+$TTL    604800
+@       IN      SOA     tuananhlab.local. root.tuananhlab.local. (
+                              2024010101 ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+; Name servers
+@       IN      NS      bind.tuananhlab.local.
+
+; PTR records for reverse DNS
+130     IN      PTR     bind.tuananhlab.local.
+130     IN      PTR     tuananhlab.local.
+135     IN      PTR     web.tuananhlab.local.
+100     IN      PTR     kali.tuananhlab.local.
