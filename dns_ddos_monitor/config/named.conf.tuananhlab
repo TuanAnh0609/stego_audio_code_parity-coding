@@ -1,0 +1,114 @@
+options {
+//      dnssec server
+        directory       "/data/named";
+        pid-file        "/var/run-named/named.pid";
+        version         "not currently available";
+//       listen-on     {127.0.0.1; any; };
+        listen-on       {any; };
+        listen-on-v6    {any; };
+        allow-recursion {127.0.0.1; 192.168.85.0/24; any; };
+        allow-query     {any; };
+        
+        // Rate limiting for DDoS protection
+        rate-limit {
+                responses-per-second 50;
+                window 5;
+                slip 2;
+                exempt-clients { 192.168.85.135/32; localhost; };
+        };
+        
+        // Query logging for monitoring
+        querylog yes;
+};
+
+logging { 
+        channel log_query {
+                file "/data/logdns/log_query" versions 5 size 500m;
+                severity info;
+                print-category yes;
+                print-severity yes;
+                print-time yes;
+        };
+        
+        channel security_log {
+                file "/data/logdns/security.log" versions 3 size 100m;
+                severity info;
+                print-category yes;
+                print-severity yes;
+                print-time yes;
+        };
+        
+        channel default_debug {
+                file "/data/logdns/named.log" versions 3 size 100m;
+                severity dynamic;
+                print-category yes;
+                print-severity yes;
+                print-time yes;
+        };
+        
+        category queries { log_query; };
+        category security { security_log; };
+        category default { default_debug; };
+        category general { default_debug; };
+        category config { default_debug; };
+        category resolver { default_debug; };
+        category xfer-in { default_debug; };
+        category xfer-out { default_debug; };
+        category notify { default_debug; };
+        category client { default_debug; };
+        category unmatched { default_debug; };
+        category network { default_debug; };
+        category update { default_debug; };
+        category dispatch { default_debug; };
+        category dnssec { default_debug; };
+        category lame-servers { default_debug; };
+};
+
+zone "0.0.127.in-addr.arpa" in {
+        type master;
+        file "db.127.0.0";
+};
+
+zone "." in {
+        type hint;
+        file "named.root";
+};
+
+zone "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa" in {
+        type master;
+        file "localhost6";
+};
+
+// Existing zones
+zone "cpv02.labipv6.vn1" in {
+        type master;
+        file "db.cpv02.labipv6.vn1";
+};
+
+zone "1.a.3.0.0.0.0.0.0.e.e.0.1.0.0.2.ip6.arpa." {
+        type master;
+        file "reverse-2001-03a1";
+};
+
+// TuanAnhLab DNS DDoS Testing Zone
+zone "tuananhlab.local" in {
+        type master;
+        file "db.tuananhlab.local";
+        allow-query { any; };
+        allow-transfer { none; };
+};
+
+// Reverse zone for 192.168.85.0/24
+zone "85.168.192.in-addr.arpa" in {
+        type master;
+        file "db.85.168.192";
+        allow-query { any; };
+        allow-transfer { none; };
+};
+
+// Additional test zone for NXDOMAIN attacks
+zone "nonexistent.tuananhlab.local" in {
+        type master;
+        file "db.nonexistent.tuananhlab.local";
+        allow-query { any; };
+};

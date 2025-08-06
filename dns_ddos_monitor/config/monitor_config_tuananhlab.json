@@ -1,0 +1,83 @@
+{
+    "log_files": [
+        "/data/logdns/log_query",
+        "/data/logdns/security.log",
+        "/data/logdns/named.log",
+        "/var/log/syslog"
+    ],
+    "output_dir": "logs",
+    "alert_file": "logs/alerts.json",
+    "stats_file": "logs/stats.json",
+    "domain": "tuananhlab.local",
+    "legitimate_domains": [
+        "tuananhlab.local",
+        "bind.tuananhlab.local",
+        "web.tuananhlab.local",
+        "www.tuananhlab.local",
+        "mail.tuananhlab.local",
+        "ftp.tuananhlab.local",
+        "api.tuananhlab.local",
+        "blog.tuananhlab.local",
+        "shop.tuananhlab.local",
+        "admin.tuananhlab.local",
+        "dev.tuananhlab.local",
+        "test.tuananhlab.local",
+        "cpv02.labipv6.vn1"
+    ],
+    "thresholds": {
+        "queries_per_second": 30,
+        "queries_per_minute": 200,
+        "unique_domains_per_client": 100,
+        "nxdomain_ratio": 0.6,
+        "amplification_size": 512,
+        "suspicious_query_types": ["ANY", "TXT"],
+        "max_query_length": 255
+    },
+    "detection_rules": {
+        "flood_attack": {
+            "enabled": true,
+            "threshold_qps": 50,
+            "threshold_qpm": 300,
+            "time_window": 60
+        },
+        "nxdomain_attack": {
+            "enabled": true,
+            "threshold_ratio": 0.7,
+            "min_queries": 10,
+            "time_window": 60
+        },
+        "amplification_attack": {
+            "enabled": true,
+            "response_size_threshold": 512,
+            "query_types": ["ANY", "TXT"],
+            "time_window": 60
+        },
+        "subdomain_enumeration": {
+            "enabled": true,
+            "unique_subdomains_threshold": 50,
+            "time_window": 300
+        }
+    },
+    "network": {
+        "allowed_subnets": ["192.168.85.0/24", "127.0.0.0/8"],
+        "attacker_detection": true,
+        "whitelist_ips": ["192.168.85.135", "127.0.0.1"]
+    },
+    "logging": {
+        "console_output": true,
+        "log_level": "INFO",
+        "colored_output": true,
+        "alert_sound": false
+    },
+    "monitoring": {
+        "update_interval": 5,
+        "stats_retention_hours": 24,
+        "alert_retention_hours": 72,
+        "auto_cleanup": true
+    },
+    "paths": {
+        "data_directory": "/data/named",
+        "log_directory": "/data/logdns",
+        "pid_file": "/var/run-named/named.pid"
+    }
+}
